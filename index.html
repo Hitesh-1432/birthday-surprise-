@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Birthday Surprise</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);
+  font-family:Arial, sans-serif;
+  color:white;
+  text-align:center;
+  overflow:hidden;
+  position:relative;
+}
+
+/* Screen Transition System */
+.screen{
+  max-width:700px;
+  width:90%;
+  position:absolute;
+  opacity:0;
+  transform:scale(0.98);
+  transition:opacity 0.5s ease, transform 0.5s ease;
+  pointer-events:none;
+}
+
+.screen.active{
+  opacity:1;
+  transform:scale(1);
+  pointer-events:auto;
+}
+
+button{
+  padding:12px 25px;
+  margin:15px 10px;
+  font-size:18px;
+  border:none;
+  border-radius:25px;
+  cursor:pointer;
+  background:#ff4da6;
+  color:white;
+  transition:0.3s;
+}
+
+button:hover{
+  transform:scale(1.08);
+}
+
+.secondary{
+  background:#444;
+}
+
+/* Typing Box */
+#typingText{
+  margin-top:20px;
+  line-height:1.8;
+  font-size:18px;
+  max-height:450px;
+  overflow-y:auto;
+  padding:20px;
+  border-radius:15px;
+  background: rgba(255,255,255,0.08);
+}
+
+/* Floating Hearts */
+.heart{
+  position:absolute;
+  bottom:-20px;
+  color:#ff4da6;
+  animation:floatUp 6s linear infinite;
+  opacity:0.8;
+}
+
+@keyframes floatUp{
+  0%{ transform:translateY(0); opacity:1; }
+  100%{ transform:translateY(-110vh); opacity:0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Screen 1 -->
+<div id="screen1" class="screen active">
+  <h2>Are you Ready?</h2>
+  <button onclick="showScreen('screen1','screen2')">Yes</button>
+  <button class="secondary" onclick="showScreen('screen1','screenNo')">No</button>
+</div>
+
+<!-- Screen 2 -->
+<div id="screen2" class="screen">
+  <h1>🎉 Happy Birthday Annu Ji 🎂</h1>
+  <button onclick="goTo3()">There is something I want to tell you…</button>
+</div>
+
+<!-- Screen 3 -->
+<div id="screen3" class="screen">
+  <h2>For You 💌</h2>
+  <p id="typingText"></p>
+</div>
+
+<!-- Screen No -->
+<div id="screenNo" class="screen">
+  <h2>Are you sure? 😌</h2>
+  <p style="margin-top:15px;">
+    Itna special surprise hai... miss kar dogi kya?
+  </p>
+  <button onclick="showScreen('screenNo','screen2')">Okay Fine, Show Me 💖</button>
+  <button class="secondary" onclick="showScreen('screenNo','screen1')">Let me think again</button>
+</div>
+
+<script>
+
+/* Smooth Screen Switch */
+function showScreen(current,next){
+  document.getElementById(current).classList.remove("active");
+  setTimeout(function(){
+    document.getElementById(next).classList.add("active");
+  },300);
+}
+
+/* Go To Confession Screen */
+function goTo3(){
+  showScreen("screen2","screen3");
+  startTyping();
+  startHearts();
+}
+
+/* Confession Text */
+var text = `Hii, Happy Birthday Annu ji. I hope you are doing great.\n\n\
+Maine apne hatho se ye website banai hai,  thodi bahot coding mujhe aati thi toh use kar liya aur vaise bhi aaj kal Humari baate kam ho gayi hain, isliye socha ek chhota sa birthday gift de doon,  jisme baat bhi ho jaye aur Birthday Gift bhi ho jaye.\n\n\
+Sabse pehle, thank you. Aapne mujhe kabhi judge nahi kiya, bina bole meri feelings samjhi, aur hamesha mera sath diya. Me bahot lucky hoon ki aap meri life me aaye.\n\n\
+Mujhe aapse baat karna, aapki baate sunna, aapka ruthna mene aapko manana, aapke baare me har ek cheez mujhe bahot pasand hai. College me bhi humesha sochta rhta tha ki kab aapse baat hogi. Jab bhi aap call karte the bhale hi me chup hi rhta tha lekin mujhe wo sab bahot pasand tha mujhe aapki awaz bahot pasand thi aur aaj bhi hai.\n\n\
+Time badla, responsibilities badh gayi, aur aap busy rhne lage, aur humari baate band si ho gyi. Me chahta hoon aap bahot aage badho aur sabko dikha do ki aap kya cheez ho. aur uske liye humari baate na bhi ho toh koi gham nahi.\n\n\
+Ek baat aur... me aapka special din kharab nahi karna chahta agar aapko achha na lage toh aap ignore kar dena theek hai toh in sab baaton ke beech mujhe aapke liye feelings aa gayi. Mujhe aap bahot pasand ho. Mujhe pata hai shayad aap ab relationship se door hi rhna chahte ho lekin fir bhi keh rha hoon. I love you. mujhe aapse bahot pyar hai.\n\n\
+Main aapse koi jawab expect nahi karta. Agar aapka jawab na bhi ho, toh don't worry mujhe bura nahi lagega. Aapko jo bhi jawab dena hai bass bol dijiye ya fir jawab nahi dena toh ignore kar dijiye. Bas aapko ye baat kehni thi toh keh diya. Kuch jyada hi time le liya shayad sorry.\n\n\
+Aur Hamesha khush rehna. Aur humesha mere sath rhna. Happy Birthday ❤️. \n Aapka Hitu ji`;
+
+var i = 0;
+
+/* Typing Effect */
+function startTyping(){
+  i = 0;
+  document.getElementById("typingText").innerHTML = "";
+  typeEffect();
+}
+
+function typeEffect(){
+  if(i < text.length){
+    var container = document.getElementById("typingText");
+    container.innerHTML += text.charAt(i);
+    i++;
+    container.scrollTop = container.scrollHeight;
+    setTimeout(typeEffect, 25);
+  }
+}
+
+/* Floating Hearts (Single Interval Protection) */
+var heartsStarted = false;
+
+function startHearts(){
+  if(heartsStarted) return;
+  heartsStarted = true;
+
+  setInterval(function(){
+    var heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(function(){
+      heart.remove();
+    },6000);
+  },500);
+}
+
+</script>
+
+</body>
+</html>
